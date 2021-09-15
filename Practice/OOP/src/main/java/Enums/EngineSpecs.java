@@ -1,3 +1,10 @@
+/**
+ * Enumerator that contains the different build of engines and if it is boosted
+ *
+ * @author Kollier Martin
+ * @version 9/14/2021
+ */
+
 package Enums;
 
 public enum EngineSpecs

@@ -1,14 +1,26 @@
 package MainClasses;
+/**
+ * Car class that contains the information for a created vehicle.
+ *
+ * @author Kollier Martin
+ * @version 9/14/2021
+ */
 
 public class Car
 {
+    // Attributes of the Car class
     protected int year = 0;
     protected String carClass, name, manufacturer, drivetrain = "";
     protected Engine engine = null;
     protected Enum trim = null;
 
-    public Car() {}
+    // Empty Constructor
+    public Car()
+    {
 
+    }
+
+    // An override of toString to print the information the created Object
     @Override
     public String toString()
     {
@@ -16,6 +28,7 @@ public class Car
                 " " + drivetrain + " " + carClass + "\n" + engine.toString() + "hp\n\n");
     }
 
+    // Getter methods for Car class
     //region Getters
     public String getCarClass() {
         return carClass;
@@ -47,6 +60,7 @@ public class Car
 
     //endregion
 
+    // Setter methods for Car class
     //region Setters
 
     public void setCarClass(String carClass) {

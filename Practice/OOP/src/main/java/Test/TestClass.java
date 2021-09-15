@@ -13,10 +13,12 @@ public class TestClass
 
     public static void main (String args[])
     {
+        // Initialize list to contain the created cars
         ArrayList<Car> randCars = new ArrayList<>();
         int i = 0;
 
-        // Let this main function randomly create cars from the created car classes
+        // This main function randomly generates cars using a given constructor
+        // There is also a way to create your own personal car by passing a Trim level as a parameter during creation
 
         while (true)
         {
@@ -27,12 +29,13 @@ public class TestClass
             randCars.add(c1); randCars.add(c2); randCars.add(c3); randCars.add(c4);
             i++;
 
-            if (i <= 3)
+            if (i <= 2)
             {
                 continue;
             }
 
             System.out.println(randCars);
+            System.out.println("Loop has ran " + (randCars.size() / 4) + " times.");
             break;
         }
     }

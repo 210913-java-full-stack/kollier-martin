@@ -1,11 +1,17 @@
+/**
+ * Interface that establishes the methods and variables that will be used to determine what level trim a vehicle is
+ * The plan here is to show that enumerators can contain functions and variables within them
+ *
+ * @author Kollier Martin
+ * @version 9/14/2021
+ */
+
 package Trims;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public interface TrimInteface
+public interface TrimInterface
 {
     // Base method for returning a random trim
     static Enum getRandTrim(){
