@@ -5,11 +5,13 @@ public class Loop
         int i = 0;
         System.out.print("I want my ");
 
-        while (true) {
+        while (true)
+        {
             System.out.print("baby back ");
             i++;
 
-            if (i <= 3) {
+            if (i <= 3)
+            {
                 continue;
             }
 
