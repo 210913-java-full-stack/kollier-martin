@@ -12,17 +12,16 @@ public class Driver {
         boolean running = true;
 
         // String for user input
-        String input = "";
+        String input;
 
-        for(int i = 0; i < args.length; i++)
-        {
-            System.out.println(args[i]);
+        for (String arg : args) {
+            System.out.println(arg);
         }
 
         Scanner scan = new Scanner(System.in);
 
         //region List Creation
-        List<ToDoItem> toDoList = new LinkedList();
+        List<ToDoItem> toDoList = new LinkedList<>();
         ToDoItem newItem1 =  new ToDoItem("Build a to-do list.");
         toDoList.add(newItem1);
         ToDoItem newItem2 =  new ToDoItem("Debug the new list.");
@@ -69,12 +68,12 @@ public class Driver {
 
                     System.out.println("\nItem: " + itemNum + " is complete!");
                 case "3":
-                    // Marl item complete method
 
                     break;
                 case "q":
                 case "Q":
                     running = false;
+                    scan.close();
                     System.out.println("Quit Acknowledged. Goodbye!");
                     System.exit(0);
                     break;
