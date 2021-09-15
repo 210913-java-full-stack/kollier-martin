@@ -1,11 +1,20 @@
 package Trims;
 import Cars.Evo;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
-public enum EvoTrims
+public enum EvoTrims implements TrimInteface
 {
     MR, GSR, Final;
+
+    // The plan here is to show that enumerators can contain functions and variables within them as well
+    // COMMENTS for variable below are in the TrimInterface
+    private static final List<EvoTrims> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
+    public static final int SIZE = VALUES.size();
+    public static final Random RAND = new Random();
 
     @Override
     public String toString()
@@ -28,7 +37,6 @@ public enum EvoTrims
 
     public static EvoTrims getRandTrim()
     {
-        Random rand = new Random();
-        return values()[rand.nextInt(values().length)];
+        return VALUES.get(RAND.nextInt(SIZE));
     }
 }

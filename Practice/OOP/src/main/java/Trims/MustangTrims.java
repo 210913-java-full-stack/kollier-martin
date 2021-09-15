@@ -1,9 +1,18 @@
 package Trims;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
-public enum MustangTrims
+public enum MustangTrims implements TrimInteface
 {
     GT, EcoBoost, Mach1, GT500;
+
+    // The plan here is to show that enumerators can contain functions and variables within them as well
+    // COMMENTS for variable below are in the TrimInterface
+    private static final List<MustangTrims> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
+    public static final int SIZE = VALUES.size();
+    public static final Random RAND = new Random();
 
     @Override
     public String toString()
@@ -29,7 +38,6 @@ public enum MustangTrims
 
     public static MustangTrims getRandTrim()
     {
-        Random rand = new Random();
-        return values()[rand.nextInt(values().length)];
+        return VALUES.get(RAND.nextInt(SIZE));
     }
 }

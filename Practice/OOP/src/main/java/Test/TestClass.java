@@ -1,37 +1,39 @@
 package Test;
 
 import Cars.*;
-import Trims.*;
 import MainClasses.*;
-import Trims.MustangTrims;
-
 import java.util.ArrayList;
-import java.util.Random;
 
 public class TestClass
 {
-    private static Challenger c1;
-    private static Charger c2;
-    private static Evo c3;
-    private static Mustang c4;
+    private static Challenger c1 = null;
+    private static Charger c2 = null;
+    private static Evo c3 = null;
+    private static Mustang c4 = null;
 
     public static void main (String args[])
     {
+        ArrayList<Car> randCars = new ArrayList<>();
+        int i = 0;
+
         // Let this main function randomly create cars from the created car classes
-        // FIXME Becomes null when doing 'getRandTrim()'
 
-        ArrayList<Car> randCars = new ArrayList<Car>();
+        while (true)
+        {
+            c1 = new Challenger();
+            c2 = new Charger();
+            c3 = new Evo();
+            c4 = new Mustang();
+            randCars.add(c1); randCars.add(c2); randCars.add(c3); randCars.add(c4);
+            i++;
 
-        c1 = new Challenger(ChallengerTrims.getRandTrim());
-        c2 = new Charger(ChargerTrims.getRandTrim());
-        c3 = new Evo(EvoTrims.getRandTrim());
-        c4 = new Mustang(MustangTrims.getRandTrim());
+            if (i <= 3)
+            {
+                continue;
+            }
 
-        randCars.add(c1);
-        randCars.add(c2);
-        randCars.add(c3);
-        randCars.add(c4);
-
-        System.out.println(randCars.toString());
+            System.out.println(randCars);
+            break;
+        }
     }
 }

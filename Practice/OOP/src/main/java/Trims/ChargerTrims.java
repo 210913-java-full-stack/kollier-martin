@@ -1,9 +1,20 @@
 package Trims;
+import Cars.Charger;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
-public enum ChargerTrims
+public enum ChargerTrims implements TrimInteface
 {
     SXT, SXTAWD, GT, RT, ScatPack, Hellcat, HellcatRedeye;
+
+    // The plan here is to show that enumerators can contain functions and variables within them as well
+    // COMMENTS for variable below are in the TrimInterface
+    private static final List<ChargerTrims> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
+    public static final int SIZE = VALUES.size();
+    public static final Random RAND = new Random();
 
     @Override
     public String toString()
@@ -12,19 +23,25 @@ public enum ChargerTrims
         switch (this)
         {
             case SXT:
-                name = ("SXT");
+                name = "SXT";
                 break;
-            case Hellcat:
-                name = ("Hellcat");
+            case SXTAWD:
+                name = "SXT AWD";
                 break;
-            case ScatPack:
-                name = ("Scat Pack");
-                break;
-            case HellcatRedeye:
-                name = ("Hellcat Redeye");
+            case GT:
+                name = "GT";
                 break;
             case RT:
-                name = ("RT");
+                name = "RT";
+                break;
+            case ScatPack:
+                name = "Scat Pack";
+                break;
+            case Hellcat:
+                name = "Hellcat";
+                break;
+            case HellcatRedeye:
+                name = "Hellcat Redeye";
                 break;
         }
         return name;
@@ -32,7 +49,6 @@ public enum ChargerTrims
 
     public static ChargerTrims getRandTrim()
     {
-        Random rand = new Random();
-        return values()[rand.nextInt(values().length)];
+        return VALUES.get(RAND.nextInt(SIZE));
     }
 }

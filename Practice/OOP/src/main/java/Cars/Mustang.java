@@ -4,8 +4,20 @@ import MainClasses.*;
 import Enums.*;
 import Trims.MustangTrims;
 
-public class Mustang extends Car
+public class Mustang extends Car implements VehicleInterface
 {
+    MustangTrims trim;
+
+    public Mustang()
+    {
+        setYear(2022);
+        setCarClass("Coupe");
+        setDrivetrain("RWD");
+        setManufacturer(Manufacturers.Ford.toString());
+        setName("Mustang");
+        randomTrim();
+    }
+
     public Mustang(MustangTrims trim)
     {
         setYear(2022);
@@ -13,6 +25,32 @@ public class Mustang extends Car
         setDrivetrain("RWD");
         setManufacturer(Manufacturers.Ford.toString());
         setName("Mustang");
+
+        switch (trim)
+        {
+            case EcoBoost:
+                setEngine(new Engine(EngineSpecs.TurboCharged, EngineSpecs.V4, 310));
+                setTrim(trim);
+                break;
+            case GT:
+                setEngine(new Engine(EngineSpecs.NA, EngineSpecs.V8, 460));
+                setTrim(trim);
+                break;
+            case Mach1:
+                setEngine(new Engine(EngineSpecs.NA, EngineSpecs.V8, 480));
+                setTrim(trim);
+                break;
+            case GT500:
+                setEngine(new Engine(EngineSpecs.Supercharged, EngineSpecs.V8, 760));
+                setTrim(trim);
+                break;
+        }
+    }
+
+    @Override
+    public void randomTrim()
+    {
+        trim = MustangTrims.getRandTrim();
 
         switch (trim)
         {
