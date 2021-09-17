@@ -1,10 +1,10 @@
 ###########################################################
 ################## CREATE FRESH DATABASE ##################
 ###########################################################
-DROP DATABASE IF EXISTS kollier;
-CREATE DATABASE kollier;
+DROP DATABASE IF EXISTS Assignment_0;
+CREATE DATABASE Assignment_0;
 
-USE kollier;
+USE Assignment_0;
 
 DROP TABLE IF EXISTS accounts;
 DROP TABLE IF EXISTS customers;
