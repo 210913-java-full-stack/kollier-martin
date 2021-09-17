@@ -1,4 +1,8 @@
-import Models.TestModel;
+package Kyle_Test;/*
+ * Kyle's code to show how to print out specific data based on the SQL table
+ *
+ */
+
 import Utils.ConnectionManager;
 
 import java.io.IOException;
@@ -17,9 +21,9 @@ public class Driver
         {
             conn = ConnectionManager.getConn();
 
-            String sqlInfo = "SELECT * FROM test_table";
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery((sqlInfo));
+            String sqlInfo = ""; // SQL statement to run
+            Statement stmt = conn.createStatement(); // Used for query execution
+            ResultSet rs = stmt.executeQuery((sqlInfo)); // Executes the designated query and stores the values into 'rs'
             List<TestModel> resultList = new ArrayList<>();
 
             while (rs.next())

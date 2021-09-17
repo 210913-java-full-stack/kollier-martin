@@ -1,3 +1,8 @@
+/*
+ * Kyle's code to show to connect to a DB
+ *
+ */
+
 package Utils;
 
 import java.io.FileReader;
@@ -8,6 +13,8 @@ import java.util.Properties;
 public class ConnectionManager
 {
     private static Connection conn;
+    private static String myDBProp = "src/main/resources/personalDB_credentials.properties";
+    private static String kyleDBProp = "src/main/resources/kyleDB_credentials.properties";
 
     private ConnectionManager()
     {
@@ -19,7 +26,8 @@ public class ConnectionManager
         if (conn == null)
         {
             Properties prop = new Properties();
-            FileReader propertiesFile = new FileReader("src/main/resources");
+            // Change me dependent on property file to attack
+            FileReader propertiesFile = new FileReader(myDBProp);
             prop.load(propertiesFile);
 
             String connString = "jdbc:mariadb://" +

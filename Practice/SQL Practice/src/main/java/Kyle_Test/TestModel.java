@@ -1,4 +1,9 @@
-package Models;
+/*
+ * Kyle's code to make a test Model for an object
+ *
+ */
+
+package Kyle_Test;
 
 public class TestModel
 {
