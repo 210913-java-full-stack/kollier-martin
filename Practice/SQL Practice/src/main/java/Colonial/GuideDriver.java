@@ -5,6 +5,8 @@ package Colonial;
  *
  */
 
+import Interfaces.DBInterface;
+import Objects.Guide;
 import Utils.ConnectionManager;
 
 import java.io.IOException;
@@ -15,9 +17,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuideDriver
+public class GuideDriver implements DBInterface
 {
-    public static void main (String args[])
+    public static void run()
     {
         Guide temp;
         Connection conn = null;

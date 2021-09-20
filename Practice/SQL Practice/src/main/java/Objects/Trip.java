@@ -1,4 +1,4 @@
-package Colonial;
+package Objects;
 
 public class Trip
 {

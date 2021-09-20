@@ -5,6 +5,8 @@ package Colonial;
  *
  */
 
+import Interfaces.DBInterface;
+import Objects.Customer;
 import Utils.ConnectionManager;
 
 import java.io.IOException;
@@ -15,9 +17,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomerDriver
+public class CustomerDriver implements DBInterface
 {
-    public static void main (String args[])
+    public static void run()
     {
         Customer temp;
         Connection conn = null;

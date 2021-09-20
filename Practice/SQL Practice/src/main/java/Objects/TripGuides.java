@@ -3,7 +3,7 @@
  *
  */
 
-package Colonial;
+package Objects;
 
 public class TripGuides
 {

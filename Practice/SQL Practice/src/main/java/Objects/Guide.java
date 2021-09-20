@@ -1,37 +1,43 @@
 /*
- * Class to represent the Customer Table from OracleColonial table
+ * Class to represent the Guide Table from OracleColonial table
  *
  */
 
-package Colonial;
+package Objects;
 
-public class Customer
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+public class Guide
 {
-    private String CUSTOMER_NUM, LAST_NAME, ADDRESS, FIRST_NAME,
-            CITY, STATE, POSTAL_CODE, PHONE = " ";
+    private String GUIDE_NUM, LAST_NAME, ADDRESS, FIRST_NAME,
+            CITY, STATE, POSTAL_CODE, PHONE_NUM, HIRE_DATE = "";
 
-    public Customer()
+
+    public Guide()
     {
     }
 
-    public Customer(String CUSTOMER_NUM, String LAST_NAME, String ADDRESS, String FIRST_NAME, String CITY, String STATE, String POSTAL_CODE, String PHONE)
+    public Guide(String GUIDE_NUM, String LAST_NAME, String ADDRESS, String FIRST_NAME, String CITY, String STATE, String POSTAL_CODE, String PHONE_NUM, String HIRE_DATE)
     {
-        this.CUSTOMER_NUM = CUSTOMER_NUM;
+        this.GUIDE_NUM = GUIDE_NUM;
         this.LAST_NAME = LAST_NAME;
         this.ADDRESS = ADDRESS;
         this.FIRST_NAME = FIRST_NAME;
         this.CITY = CITY;
         this.STATE = STATE;
         this.POSTAL_CODE = POSTAL_CODE;
-        this.PHONE = PHONE;
+        this.PHONE_NUM = PHONE_NUM;
+        this.HIRE_DATE = HIRE_DATE;
     }
 
-    public String getCUSTOMER_NUM() {
-        return CUSTOMER_NUM;
+    public String getGUIDE_NUM() {
+        return GUIDE_NUM;
     }
 
-    public void setCUSTOMER_NUM(String CUSTOMER_NUM) {
-        this.CUSTOMER_NUM = CUSTOMER_NUM;
+    public void setGUIDE_NUM(String GUIDE_NUM) {
+        this.GUIDE_NUM = GUIDE_NUM;
     }
 
     public String getLAST_NAME() {
@@ -82,24 +88,31 @@ public class Customer
         this.POSTAL_CODE = POSTAL_CODE;
     }
 
-    public String getPHONE() {
-        return PHONE;
+    public String getPHONE_NUM() {
+        return PHONE_NUM;
     }
 
-    public void setPHONE(String PHONE) {
-        this.PHONE = PHONE;
+    public void setPHONE_NUM(String PHONE_NUM) {
+        this.PHONE_NUM = PHONE_NUM;
+    }
+
+    public String getHIRE_DATE() {
+        return HIRE_DATE;
+    }
+
+    public void setHIRE_DATE(String HIRE_DATE) {
+        this.HIRE_DATE = HIRE_DATE;
     }
 
     @Override
-    public String toString()
-    {
-        return (this.CUSTOMER_NUM + ": " +
+    public String toString() {
+        return (this.GUIDE_NUM + ": " +
                 this.LAST_NAME + ", " +
                 this.FIRST_NAME + " | " +
                 this.ADDRESS + " | " +
                 this.CITY + " | " +
                 this.STATE + " | " +
                 this.POSTAL_CODE + " | " +
-                this.PHONE);
+                this.HIRE_DATE);
     }
 }

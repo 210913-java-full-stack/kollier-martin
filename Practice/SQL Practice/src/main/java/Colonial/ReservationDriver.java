@@ -5,6 +5,7 @@ package Colonial;
  *
  */
 
+import Objects.Reservation;
 import Utils.ConnectionManager;
 
 import java.io.IOException;
@@ -17,7 +18,7 @@ import java.util.List;
 
 public class ReservationDriver
 {
-    public static void main (String args[])
+    public static void run()
     {
         Reservation temp;
         Connection conn = null;

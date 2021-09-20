@@ -5,6 +5,8 @@ package Colonial;
  *
  */
 
+import Interfaces.DBInterface;
+import Objects.TripGuides;
 import Utils.ConnectionManager;
 
 import java.io.IOException;
@@ -12,9 +14,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TripGuideDriver
+public class TripGuideDriver implements DBInterface
 {
-    public static void main (String args[])
+    public static void run()
     {
         TripGuides temp;
         Connection conn = null;
