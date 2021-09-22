@@ -50,7 +50,7 @@ WHERE account_id = 900001; #Jason
 
 UPDATE accounts
 SET balance = (balance + 199.99)
-WHERE account_id = 900002; #Amanda
+WHERE account_id = 900003; #Amanda
 
 
 # Change Amanda Smith's last name to "Lastname"
