@@ -1,4 +1,3 @@
-/*
 package DAOs;
 
 public class DataDAO {
@@ -43,4 +42,4 @@ public class DataDAO {
 //    public String toJSON() {
 //        return "{\"Data\": {\"string\":\"" + string + "\", \"integer\":" + integer + ", \"bool\": " + bool + "} }";
 //    }
-}*/
+}

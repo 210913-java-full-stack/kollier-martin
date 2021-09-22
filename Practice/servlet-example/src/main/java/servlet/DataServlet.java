@@ -1,4 +1,3 @@
-/*
 package servlet;
 
 import DAOs.DataDAO;
@@ -37,4 +36,4 @@ public class DataServlet extends HttpServlet {
         resp.setStatus(202);
         resp.getWriter().print("Data: " + s + ", " + i.toString() + ", " + b);
     }
-}*/
+}

@@ -11,6 +11,7 @@
         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
         version="2.5">
 
+    <!-- Listener -->
     <listener>
         <listener-class>Services.DependencyLoaderListener</listener-class>
     </listener>
@@ -19,6 +20,7 @@
             the name of the servlet later to reference this instance.
             -->
 
+    <!-- Ping Servlet -->
     <servlet>
         <servlet-name>pingServlet</servlet-name>
         <servlet-class>servlet.PingServlet</servlet-class>
@@ -28,7 +30,8 @@
         <url-pattern>/ping</url-pattern>
     </servlet-mapping>
 
-    <!--<servlet>
+    <!-- Data Servlet -->
+    <servlet>
         <servlet-name>dataServlet</servlet-name>
         <servlet-class>servlet.DataServlet</servlet-class>
     </servlet>
@@ -37,6 +40,7 @@
         <url-pattern>/data</url-pattern>
     </servlet-mapping>
 
+    <!-- Jackson Servlet -->
     <servlet>
         <servlet-name>jacksonServlet</servlet-name>
         <servlet-class>servlet.JacksonServlet</servlet-class>
@@ -44,6 +48,6 @@
     <servlet-mapping>
         <servlet-name>jacksonServlet</servlet-name>
         <url-pattern>/jackson</url-pattern>
-    </servlet-mapping>-->
+    </servlet-mapping>
 
 </web-app>

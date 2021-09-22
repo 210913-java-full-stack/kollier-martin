@@ -1,4 +1,3 @@
-/*
 package Services;
 
 import DAOs.DataDAO;
@@ -17,4 +16,4 @@ public class PersistenceService {
     public static void setData(DataDAO d) {
         data = d;
     }
-}*/
+}

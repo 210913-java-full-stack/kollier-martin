@@ -1,4 +1,3 @@
-/*
 package servlet;
 
 import DAOs.DataDAO;
@@ -33,4 +32,3 @@ public class JacksonServlet extends HttpServlet {
         resp.getWriter().print(json);
     }
 }
-*/
