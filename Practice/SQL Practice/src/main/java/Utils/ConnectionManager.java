@@ -13,7 +13,7 @@ import java.util.Properties;
 public class ConnectionManager
 {
     private static Connection conn;
-    private static String myDBProp = "src/main/resources/personalDB_credentials.properties";
+    private static String myDBProp = "src/main/resources/db_properties.properties";
     private static String kyleDBProp = "src/main/resources/kyleDB_credentials.properties";
 
     private ConnectionManager()
