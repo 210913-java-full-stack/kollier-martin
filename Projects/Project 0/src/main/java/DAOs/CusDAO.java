@@ -32,9 +32,9 @@ public class CusDAO implements BankDAO<Customer>{
     /**
      * All SQL parameters used to run and store a query within the program
      */
-    private String sql = "";
+    private String sql;
     private PreparedStatement pstmt = null;
-    private Connection conn = null;
+    private Connection conn;
     private ResultSet rs = null;
 
     /**
@@ -61,11 +61,11 @@ public class CusDAO implements BankDAO<Customer>{
     @Override
     public void save(Customer rowData) throws SQLException {
         // INSERT IGNORE INTO or REPLACE???
-        sql = "INSERT IGNORE INTO CUSTOMERS" +
+        /*sql = "INSERT IGNORE INTO CUSTOMERS" +
                 "SET CUSTOMER_ID = ?";
         pstmt = conn.prepareStatement(sql);
         pstmt.setInt(1, rowData.getCusID());
-        pstmt.executeUpdate(sql);
+        pstmt.executeUpdate(sql);*/
 
         sql = "INSERT IGNORE INTO CUSTOMERS" +
                 "SET LAST_NAME = ?";

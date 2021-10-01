@@ -121,6 +121,26 @@ public class AccDAO implements BankDAO<Account> {
         return currentAccount;
     }
 
+    public Account getByName(String customer) throws SQLException
+    {
+        /*
+            SELECT ACCOUNTS
+
+            WHERE c.CUSTOMER_ID
+        * */
+        sql = "SELECT ACCOUNTS a FROM ACCOUNTS" +
+                "WHERE a.ACCOUNT_ID = ?";
+
+        pstmt = conn.prepareStatement(sql);
+        pstmt.setString(1, customer);
+
+        rs = pstmt.executeQuery();
+
+        currentAccount = new Account(rs.getInt("ACCOUNT_ID"), rs.getInt("CUSTOMER_ID"), rs.getInt("BALANCE"));
+
+        return currentAccount;
+    }
+
     /**
      * This method returns every piece of data from the ACCOUNTS table
      * @return Every piece of data from the ACCOUNTS table

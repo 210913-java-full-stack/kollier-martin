@@ -2,55 +2,27 @@ package Menu;
 
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Scanner;
+
+import Utils.PasswordUtil;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 public class Login {
+    PasswordUtil passwordManager = PasswordUtil.getManager();
     public Login(){
-        instanceInit();
     }
 
-    public void instanceInit() {
-        Scanner scn = new Scanner(System.in);
-        String userName, passWord;
-        JSONParser jParser = new JSONParser();
-        JSONObject jObj = new JSONObject();
-
-        boolean isLoggingIn = true;
-
-        while(isLoggingIn) {
-            System.out.print("Enter your username: ");
-            userName = scn.nextLine();
-
-            System.out.println("\n");
-
-            System.out.print("Enter you password: ");
-            passWord = scn.nextLine();
-
-            if (authenticateUser(jParser, jObj, userName, passWord))
-            {
-                System.out.println("Login successful!");
-                LoggedIn inMenu = new LoggedIn(userName);
-                isLoggingIn = false;
-            }
-            else {
-                isLoggingIn = true;
-            }
-        }
-    }
-
-    private boolean authenticateUser(JSONParser jParser, JSONObject jObj, String userName, String passWord){
-        decodeData(jParser, jObj, userName, passWord);
+    public static boolean authenticateUser(JSONParser jParser, JSONObject jObj, String userName, String passWord){
+        jObj = decodeData(jParser, jObj);
 
         String tempUser = (String) jObj.get("username");
         String tempPword = (String) jObj.get("password");
 
         boolean isAuthentic;
 
-        if (tempUser == userName && tempPword == passWord)
+        if (tempUser.equals(userName) && tempPword.equals(passWord))
         {
             isAuthentic = true;
         }
@@ -62,12 +34,39 @@ public class Login {
         return isAuthentic;
     }
 
-    private void decodeData(JSONParser jParser, JSONObject jObj, String userName, String passWord) {
+    private static JSONObject decodeData(JSONParser jParser, JSONObject jObj) {
         try {
             jObj = (JSONObject) jParser.parse(new FileReader("src/main/resources/credentials.json"));
         }
         catch (ParseException | IOException e) {
             e.printStackTrace();
+        }
+
+        return jObj;
+    }
+
+    private void printMenu()
+    {
+        String userName, passWord
+        while (isLoggingIn) {
+            System.out.println("============= LOGIN ===============");
+            System.out.print("Enter your username: ");
+            userName = scn.nextLine();
+
+            System.out.print("Enter your password: ");
+            passWord = scn.nextLine();
+
+            if (Login.authenticateUser(jParser, jObj, userName, passWord)) {
+                System.out.println("Login successful!");
+
+                LoggedIn loggedIn = new LoggedIn(userName);
+                pvli.printMyView(loggedIn);
+
+                isLoggingIn = false;
+            } else {
+                System.out.println("Password is incorrect! Try again.");
+                isLoggingIn = true;
+            }
         }
     }
 }

@@ -1,52 +1,87 @@
 package Menu;
 
+import DAOs.*;
+import Models.*;
+import Utils.ConnectionManager;
 import org.json.simple.JSONObject;
 
-import java.util.Scanner;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
+
 
 public class Creation{
     public Creation() {
-        instanceInit();
     }
 
-    private void instanceInit() {
-        Scanner scn = new Scanner(System.in);
-        String newUserName, newPassword;
-        Login logInPrompt;
-        JSONObject jObj = new JSONObject();
-        boolean isCreatingAccount = true;
+    public static boolean checkForIntegrity(String firstName, String lastName, String newUserName, String newPassword)
+    {
+        Connection conn = null;
 
-        while(isCreatingAccount) {
-            System.out.print("Enter your username: ");
-            newUserName = scn.nextLine();
-
-            System.out.println("\n");
-
-            System.out.print("Enter your password: ");
-            newPassword = scn.nextLine();
-
-            if ((newUserName != null && newPassword != null) || (newUserName.isEmpty() && newPassword.isEmpty())){
-                encryptData(jObj, newUserName, newPassword);
-                System.out.println("Account creation successful!");
-                System.out.print("Would you like to login now? ");
-
-                if (scn.nextLine().equalsIgnoreCase("y"))
-                {
-                    isCreatingAccount = false;
-                    logInPrompt = new Login();
-                    logInPrompt.instanceInit();
-                } else if (scn.nextLine().equalsIgnoreCase("n")){
-                    isCreatingAccount = false;
-                }
-            }
-            else {
-                isCreatingAccount = true;
-            }
+        try {
+            conn = ConnectionManager.getConn();
         }
+        catch (SQLException e)
+        {
+            System.out.println("SQLException: " + e);
+        }
+        catch (IOException e)
+        {
+            System.out.println("IOException: " + e);
+        }
+
+        CusDAO cusDAO = new CusDAO(conn);
+        Customer customer;
+        boolean notGood = true;
+
+        if((newUserName != null && newPassword != null && firstName != null && lastName != null)
+            || (firstName.isEmpty() && lastName.isEmpty() && newUserName.isEmpty() && newPassword.isEmpty()))
+        {
+            customer = new Customer(lastName, firstName);
+
+            try{
+                cusDAO.save(customer);
+            }catch (SQLException e)
+            {
+
+            }
+
+            notGood = false;
+        }
+
+        return notGood;
     }
 
-    private void encryptData(JSONObject jObj, String userName, String passWord) {
+    public static void encryptData(JSONObject jObj, String firstName, String lastName, String userName, String passWord) {
+        FileWriter fileWriter;
+
+        String credentials = "src/main/resources/credentials.json";
+
+        try {
+            Connection conn = ConnectionManager.getConn();
+        }
+        catch (SQLException e)
+        {
+            System.out.println("SQLException: " + e);
+        }
+        catch (IOException e)
+        {
+            System.out.println("IOException: " + e);
+        }
+
+        jObj.put("firstname", firstName);
+        jObj.put("lastname", lastName);
         jObj.put("username", userName);
         jObj.put("password", passWord);
+
+        try {
+            fileWriter = new FileWriter(credentials, true);
+            fileWriter.write("\n" + jObj.toJSONString());
+            fileWriter.close();
+        } catch (IOException e)
+        {
+            System.out.println("Can not write to file: " + e + "\nCheck permissions and try again.");
+        }
     }
 }

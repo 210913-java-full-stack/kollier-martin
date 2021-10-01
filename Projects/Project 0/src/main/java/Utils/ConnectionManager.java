@@ -1,5 +1,5 @@
 /*
- * Kyle's code to show to connect to a DB
+ * Return connection to a DB
  *
  */
 

@@ -2,39 +2,40 @@ package Menu;
 
 import java.util.Scanner;
 
-public class LoggedIn {
-    public LoggedIn(String username) {
-        instanceInit(username);
+public class LoggedIn implements PrintView {
+    public static String username = "";
+
+    private boolean isLoggingIn;
+    private Scanner scn = new Scanner(System.in);
+
+    public LoggedIn(String username)
+    {
+        this.username = username;
     }
 
-    private void instanceInit(String username) {
-        String input = "";
-        Scanner scn = new Scanner(System.in);
-        boolean running = true;
+    public void printMenu()
+    {
+        String userName, passWord;
 
-        System.out.printf("============= %s ===============" +
-                "\nEnter selection:" +
-                "\n\n1) View Account Balance" +
-                "\n2) Print Transaction History" +
-                "\n3) Transfer Funds" +
-                "\nQ) Quit to Main Menu", username);
+        while (isLoggingIn) {
+            System.out.println("============= LOGIN ===============");
+            System.out.print("Enter your username: ");
+            userName = scn.nextLine();
 
-        switch (input) {
-            case "1":
-                Login loginPrompt = new Login();
-            case "2":
-                Creation creationPrompt = new Creation();
-            case "3":
+            System.out.print("Enter your password: ");
+            passWord = scn.nextLine();
 
-                break;
-            case "q":
-            case "Q":
-                running = false;
-                scn.close();
-                System.out.println("Quit Acknowledged. Goodbye!");
-                System.exit(0);
-                break;
+            if (Login.authenticateUser(jParser, jObj, userName, passWord)) {
+                System.out.println("Login successful!");
+
+                LoggedIn loggedIn = new LoggedIn(userName);
+                pvli.printMyView(loggedIn);
+
+                isLoggingIn = false;
+            } else {
+                System.out.println("Password is incorrect! Try again.");
+                isLoggingIn = true;
+            }
         }
     }
-
 }
