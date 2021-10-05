@@ -72,6 +72,7 @@ public class MyArrayList<T> implements MyListInterface<T>{
 
     @Override
     public T get(int index) {
+        OutOfBoundsCheck(index);
         return (T) theList[index];
     }
 
@@ -125,7 +126,7 @@ public class MyArrayList<T> implements MyListInterface<T>{
     }
 
     @Override
-    public int size() {
+    public int length() {
         return size;
     }
 
@@ -169,8 +170,8 @@ public class MyArrayList<T> implements MyListInterface<T>{
      * Checks to make sure the array is not out of bounds
      * @param index
      */
-    private void OutOfBoundsCheck(int index) {
-        if (index >= size)
+    private void OutOfBoundsCheck(int index) throws IndexOutOfBoundsException{
+        if (index >= size || index < 0)
         {
             throw new IndexOutOfBoundsException("Index: " + index + " out of bounds.");
         }
@@ -180,6 +181,6 @@ public class MyArrayList<T> implements MyListInterface<T>{
      * Increases theList by 1
      */
     private void grow() {
-        theList = Arrays.copyOf(theList, INIT_CAPACITY + 1);
-    }
+        theList = Arrays.copyOf(theList, size + 1);
+    } //TODO: test
 }

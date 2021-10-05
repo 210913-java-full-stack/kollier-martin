@@ -8,8 +8,10 @@
 
 package DAOs;
 
+import Menu.PrintManager;
 import Models.Account;
 import MyCollections.MyArrayList;
+import Utils.ConnectionManager;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -60,45 +62,13 @@ public class AccDAO implements BankDAO<Account> {
      */
     @Override
     public void save(Account rowData) throws SQLException {
-        // INSERT IGNORE INTO or REPLACE???
-        sql = "INSERT IGNORE INTO ACCOUNTS" +
-                "SET ACCOUNT_ID = ?";
+        sql = "INSERT INTO ACCOUNTS(ACCOUNT_ID, ACCOUNT_TYPE, BALANCE)" +
+                "VALUES (?, ?, ?)";
         pstmt = conn.prepareStatement(sql);
         pstmt.setInt(1, rowData.getAccID());
+        pstmt.setString(2, rowData.getAccType());
+        pstmt.setInt(3, rowData.getBalance());
         pstmt.executeUpdate(sql);
-
-        sql = "INSERT IGNORE INTO ACCOUNTS" +
-                "SET CUSTOMER_ID = ?";
-        pstmt = conn.prepareStatement(sql);
-        pstmt.setInt(1, rowData.getCustID());
-        pstmt.executeUpdate(sql);
-
-        sql = "INSERT IGNORE INTO ACCOUNTS" +
-                "SET BALANCE = ?";
-        pstmt = conn.prepareStatement(sql);
-        pstmt.setInt(1, rowData.getBalance());
-        pstmt.executeUpdate(sql);
-    }
-
-    /**
-     * This method returns row data of an Account depending on the CUSTOMER_ID column, based on the id parameter
-     * @param ID
-     * @return Row data of an Account from the CUSTOMER_ID column based on the id parameter
-     * @throws SQLException
-     */
-    @Override
-    public Account getByCID(int ID) throws SQLException {
-        sql = "SELECT ACCOUNTS a FROM ACCOUNTS" +
-                "WHERE a.CUSTOMER_ID = ?";
-
-        pstmt = conn.prepareStatement(sql);
-        pstmt.setInt(1, ID);
-
-        rs = pstmt.executeQuery();
-
-        currentAccount = new Account(rs.getInt("ACCOUNT_ID"), rs.getInt("CUSTOMER_ID"), rs.getInt("BALANCE"));
-
-        return currentAccount;
     }
 
     /**
@@ -107,7 +77,8 @@ public class AccDAO implements BankDAO<Account> {
      * @return Row data of an Account from the ACCOUNT_ID column based on the id parameter
      * @throws SQLException
      */
-    public Account getByAID(int ID) throws SQLException {
+    @Override
+    public Account getByID(int ID) throws SQLException {
         sql = "SELECT ACCOUNTS a FROM ACCOUNTS" +
                 "WHERE a.ACCOUNT_ID = ?";
 
@@ -116,27 +87,7 @@ public class AccDAO implements BankDAO<Account> {
 
         rs = pstmt.executeQuery();
 
-        currentAccount = new Account(rs.getInt("ACCOUNT_ID"), rs.getInt("CUSTOMER_ID"), rs.getInt("BALANCE"));
-
-        return currentAccount;
-    }
-
-    public Account getByName(String customer) throws SQLException
-    {
-        /*
-            SELECT ACCOUNTS
-
-            WHERE c.CUSTOMER_ID
-        * */
-        sql = "SELECT ACCOUNTS a FROM ACCOUNTS" +
-                "WHERE a.ACCOUNT_ID = ?";
-
-        pstmt = conn.prepareStatement(sql);
-        pstmt.setString(1, customer);
-
-        rs = pstmt.executeQuery();
-
-        currentAccount = new Account(rs.getInt("ACCOUNT_ID"), rs.getInt("CUSTOMER_ID"), rs.getInt("BALANCE"));
+        currentAccount = new Account(rs.getString("ACCOUNT_NAME"), rs.getInt("ACCOUNT_ID"), rs.getString("ACCOUNT_TYPE"), rs.getInt("BALANCE"));
 
         return currentAccount;
     }
@@ -154,7 +105,8 @@ public class AccDAO implements BankDAO<Account> {
 
         while(rs.next())
         {
-            Account currentAccount = new Account(rs.getInt("ACCOUNT_ID"), rs.getInt("CUSTOMER_ID"), rs.getInt("BALANCE"));
+            currentAccount = new Account(rs.getString("ACCOUNT_NAME"), rs.getInt("ACCOUNT_ID"), rs.getString("ACCOUNT_TYPE"), rs.getInt("BALANCE"));
+
             customers.add(currentAccount);
         }
 
@@ -173,5 +125,133 @@ public class AccDAO implements BankDAO<Account> {
         pstmt = conn.prepareStatement(sql);
         pstmt.setInt(1, ID);
         rs = pstmt.executeQuery();
+    }
+
+    public int getMaxAccID(){
+        int ID = 0;
+        try {
+            sql = "SELECT MAX(ACCOUNT_ID)" +
+                    "FROM ACCOUNTS";
+
+            pstmt = conn.prepareStatement(sql);
+
+            rs = pstmt.executeQuery();
+
+            while (rs.next()){
+                ID = rs.getInt("ACCOUNT_ID");
+            }
+        } catch (SQLException e) {
+            // This should never fail as long as the table is not empty
+            e.printStackTrace();
+        }
+
+        return ID;
+    }
+
+    // Update Account Info with Result Set
+    public void updateAccount(ResultSet rs) {
+        try {
+            while (rs.next()) {
+                PrintManager.getPM().getCurrentAccount().setAccID(rs.getInt("ACCOUNT_ID"));
+                PrintManager.getPM().getCurrentAccount().setAccType(rs.getString("ACCOUNT_TYPE"));
+                PrintManager.getPM().getCurrentAccount().setBalance(rs.getInt("BALANCE"));
+            }
+        } catch (SQLException e) {
+            System.out.println("Invalid data type has been used in the updating of this account. Try again.");
+        }
+    }
+
+    // Withdraw
+    public boolean withdrawFunds(int amount) {
+        boolean success = false;
+
+        updateAccount(getAllData());
+
+        try {
+            if (amount > PrintManager.getPM().getCurrentAccount().getBalance()) {
+                System.out.println("You have insufficient funds for this transaction.");
+                success = false;
+            } else {
+                sql = "UPDATE ACCOUNTS" +
+                        "SET BALANCE = (BALANCE - ?)" +
+                        "WHERE ACCOUNT_ID = ?";
+                pstmt = conn.prepareStatement(sql);
+                pstmt.setInt(1, amount);
+                pstmt.setInt(2, PrintManager.getPM().getCurrentAccount().getAccID());
+
+                if (pstmt.executeUpdate(sql) != 0) {
+                    System.out.println(amount + " has been withdrawn from your account.");
+                    success = true;
+                }
+            }
+        } catch (SQLException e) {
+            NullAccount(PrintManager.getPM().getCurrentAccount().getBalance());
+            success = false;
+        }
+
+        return success;
+    }
+
+    // Deposit
+    public boolean depositFunds(int amount) throws SQLException {
+        boolean success = false;
+
+        sql = "UPDATE ACCOUNTS" +
+                "SET BALANCE = (BALANCE + ?)" +
+                "WHERE ACCOUNT_ID = ?";
+        pstmt = conn.prepareStatement(sql);
+        pstmt.setInt(1, amount);
+        pstmt.setInt(2, PrintManager.getPM().getCurrentAccount().getAccID());
+
+        if(pstmt.executeUpdate(sql) != 0){
+            success = true;
+        }
+
+        return success;
+    }
+
+    // Transfer Funds
+    public boolean transferFunds(int amount, int otherAccID){
+        boolean success = false;
+
+        withdrawFunds(amount);
+
+        try {
+            sql = "UPDATE ACCOUNTS" +
+                    "SET BALANCE = (BALANCE + ?)" +
+                    "WHERE ACCOUNT_ID = ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, amount);
+            pstmt.setInt(2, otherAccID);
+
+            if (pstmt.executeUpdate(sql) != 0) {
+                System.out.println(amount + " has been deposited to: Account " + otherAccID);
+                success = true;
+            }
+        } catch (SQLException e) {
+            NullAccount(otherAccID);
+            success = false;
+        }
+
+        return success;
+    }
+
+    public ResultSet getAllData() {
+        try {
+            sql = "SELECT * FROM ACCOUNTS " +
+                    "WHERE ACCOUNT_ID = ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, PrintManager.getPM().getCurrentAccount().getAccID());
+            rs = pstmt.executeQuery();
+        }catch (SQLException e){
+            NullAccount(PrintManager.getPM().getCurrentAccount().getAccID());
+        }
+
+        return rs;
+    }
+
+    private String NullAccount(int accID)
+    {
+        return "Account with ID : " + accID + " does not exist.";
     }
 }

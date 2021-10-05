@@ -16,7 +16,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class CusDAO implements BankDAO<Customer>{
     /**
@@ -87,14 +86,14 @@ public class CusDAO implements BankDAO<Customer>{
      * @throws SQLException
      */
     @Override
-    public Customer getByCID(int ID) throws SQLException {
+    public Customer getByID(int ID) throws SQLException {
         sql = "SELECT CUSTOMERS c FROM CUSTOMERS" +
                 "WHERE c.CUSTOMER_ID = ?";
         pstmt = conn.prepareStatement(sql);
         pstmt.setInt(1, ID);
         rs = pstmt.executeQuery();
 
-        currentCustomer = new Customer(rs.getInt("CUSTOMER_ID"), rs.getString("LAST_NAME"), rs.getString("FIRST_NAME"));
+        currentCustomer = new Customer(rs.getInt("CUSTOMER_ID"), rs.getString("EMAIL"), rs.getString("LAST_NAME"), rs.getString("FIRST_NAME"));
 
         return currentCustomer;
     }
@@ -105,15 +104,20 @@ public class CusDAO implements BankDAO<Customer>{
      * @throws SQLException
      */
     @Override
-    public MyArrayList<Customer> getAll() throws SQLException {
-        sql = "SELECT * FROM CUSTOMERS";
-        pstmt = conn.prepareStatement(sql);
-        rs = pstmt.executeQuery();
+    public MyArrayList<Customer> getAll(){
+        try {
+            sql = "SELECT * FROM CUSTOMERS";
+            pstmt = conn.prepareStatement(sql);
+            rs = pstmt.executeQuery();
 
-        while(rs.next())
-        {
-            currentCustomer = new Customer(rs.getInt("CUSTOMER_ID"), rs.getString("LAST_NAME"), rs.getString("FIRST_NAME"));
-            customers.add(currentCustomer);
+            while (rs.next()) {
+                currentCustomer = new Customer(rs.getInt("CUSTOMER_ID"),
+                        rs.getString("EMAIL"),  rs.getString("LAST_NAME"),
+                        rs.getString("FIRST_NAME"));
+                customers.add(currentCustomer);
+            }
+        } catch (SQLException e){
+            System.out.println("Incorrect table name. Can not fetch data from database.");
         }
 
         return customers;
@@ -133,4 +137,18 @@ public class CusDAO implements BankDAO<Customer>{
         rs = pstmt.executeQuery();
 
     }
+
+    public Customer getByName(String username) throws SQLException{
+        sql = "SELECT CUSTOMERS c FROM CUSTOMERS" +
+                "JOIN USERINFO u ON c.USER_ID = u.USER_ID" +
+                "WHERE c.USER_ID = ?";
+        pstmt = conn.prepareStatement(sql);
+        pstmt.setString(1, username);
+        rs = pstmt.executeQuery();
+
+        currentCustomer = new Customer(rs.getInt("CUSTOMER_ID"), rs.getString("EMAIL"),  rs.getString("LAST_NAME"), rs.getString("FIRST_NAME"));
+
+        return currentCustomer;
+    }
+
 }

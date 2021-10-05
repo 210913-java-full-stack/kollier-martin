@@ -12,7 +12,7 @@ import java.util.Properties;
 
 public class ConnectionManager
 {
-    private static Connection conn;
+    public static Connection conn;
     private static String myDBProp = "src/main/resources/db_properties.properties";
 
     private ConnectionManager()

@@ -1,58 +1,47 @@
 package Models;
 
+import Utils.ConnectionManager;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class Account
 {
-    private int CUSTOMER_ID, ACCOUNT_ID, BALANCE = 0;
+    private int ACCOUNT_ID, BALANCE = 0;
+    private String ACCOUNT_TYPE, ACCOUNT_NAME = "";
 
-    public Account()
-    {
+    private String sql;
+    private PreparedStatement pstmt;
+    private Connection conn;
+    private ResultSet rs;
+
+    public Account() {
+        this.conn = ConnectionManager.conn;
     }
 
-    public Account(int ACCOUNT_ID, int CUSTOMER_ID, int BALANCE) {
+    public Account(String ACCOUNT_NAME, int ACCOUNT_ID, String ACCOUNT_TYPE, int BALANCE) {
+        this.conn = ConnectionManager.conn;
+        this.ACCOUNT_NAME = ACCOUNT_NAME;
         this.ACCOUNT_ID = ACCOUNT_ID;
-        this.CUSTOMER_ID = CUSTOMER_ID;
+        this.ACCOUNT_TYPE = ACCOUNT_TYPE;
         this.BALANCE = BALANCE;
     }
 
-    // Withdraw
-    public void withdrawFunds(int amount)
-    {
-        // TODO: configure the withdrawal of funds from account
-
-
-        /*try (rs.next())
-        {
-            conn = ConnectionManager.getConn();
-        } catch (SQLException | IOException e)
-        {
-            //TODO: Handle this exception
-        }*/
+    public String getACCOUNT_NAME() {
+        return ACCOUNT_NAME;
     }
 
-    // Deposit
-    public void depositFunds(int amount)
-    {
-        // TODO: configure the deposit of funds to account
+    public void setACCOUNT_NAME(String ACCOUNT_NAME) {
+        this.ACCOUNT_NAME = ACCOUNT_NAME;
     }
 
-    // Transfer Funds
-    public void transferFunds(int amount, int otherCustID)
-    {
-        // OPTIONAL
-        // TODO: configure the transfer of funds to another account
+    public String getAccType() {
+        return ACCOUNT_TYPE;
     }
 
-    public int getCustID() {
-        return CUSTOMER_ID;
-    }
-
-    public void setCustID(int CUSTOMER_ID) {
-        this.CUSTOMER_ID = CUSTOMER_ID;
-    }
+    public void setAccType(String ACCOUNT_TYPE) { this.ACCOUNT_TYPE = ACCOUNT_TYPE; }
 
     public int getAccID() {
         return ACCOUNT_ID;

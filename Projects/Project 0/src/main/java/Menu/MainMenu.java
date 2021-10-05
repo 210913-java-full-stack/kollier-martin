@@ -1,31 +1,35 @@
 package Menu;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 
-public class MainMenu implements PrintView {
+public class MainMenu extends PrintView {
 
-    private Scanner scn = new Scanner(System.in);
+    public MainMenu (Scanner scn)
+    {
+        super("MainMenu", scn);
+    }
 
     @Override
-    public void printMenu(String input) {
+    public void printMenu() throws SQLException {
         System.out.println("============= MAIN MENU ===============" +
                 "\nEnter selection:" +
                 "\n\t1) Login" +
                 "\n\t2) Create an Account" +
-                "\n\tQ) Quit");
-        input = scn.nextLine();
+                "\n\tQ) Quit Application");
+        String input = scn.nextLine();
 
         switch (input) {
             case "1":
-                // pvl.printMyView(login);
+                pm.printThis(new Login(scn));
                 break;
             case "2":
-                // pvc.printMyView(create);
+                pm.printThis(new CustomerCreation(scn));
                 break;
             case "q":
             case "Q":
                 scn.close();
-                System.out.println("Quit Acknowledged. Goodbye!");
+                System.out.println("Closing Application. Goodbye!");
                 System.exit(0);
                 break;
         }

@@ -8,14 +8,10 @@ public class Driver {
     public static void main(String args[]) {
         boolean running = true;
 
-        PrintManager pm = new PrintManager.getPM();
-
-        Driver driver = new Driver();
-
+        PrintManager pm = PrintManager.getPM();
 
         while (running) {
-            Menu currentMenu = new MainMenu();
-            pm.printMyView(currentMenu);
+            pm.printThis(new MainMenu());
         }
     }
 }

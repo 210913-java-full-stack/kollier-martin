@@ -1,66 +1,34 @@
 package Menu;
 
-import java.io.FileReader;
-import java.io.IOException;
+import java.sql.SQLException;
+import java.util.Scanner;
 
-import Utils.PasswordUtil;
+import Models.Customer;
+import Utils.CredentialChecker;
 
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-
-public class Login {
-    PasswordUtil passwordManager = PasswordUtil.getManager();
-    public Login(){
+public class Login extends PrintView {
+    public Login(Scanner scn) {
+        super("Login", scn);
     }
 
-    public static boolean authenticateUser(JSONParser jParser, JSONObject jObj, String userName, String passWord){
-        jObj = decodeData(jParser, jObj);
+    @Override
+    public void printMenu() throws SQLException {
+        CredentialChecker cc = CredentialChecker.getManager();
+        boolean isLoggingIn = true;
 
-        String tempUser = (String) jObj.get("username");
-        String tempPword = (String) jObj.get("password");
-
-        boolean isAuthentic;
-
-        if (tempUser.equals(userName) && tempPword.equals(passWord))
-        {
-            isAuthentic = true;
-        }
-        else
-        {
-            isAuthentic = false;
-        }
-
-        return isAuthentic;
-    }
-
-    private static JSONObject decodeData(JSONParser jParser, JSONObject jObj) {
-        try {
-            jObj = (JSONObject) jParser.parse(new FileReader("src/main/resources/credentials.json"));
-        }
-        catch (ParseException | IOException e) {
-            e.printStackTrace();
-        }
-
-        return jObj;
-    }
-
-    private void printMenu()
-    {
-        String userName, passWord
         while (isLoggingIn) {
             System.out.println("============= LOGIN ===============");
             System.out.print("Enter your username: ");
-            userName = scn.nextLine();
+            String userName = scn.nextLine();
 
             System.out.print("Enter your password: ");
-            passWord = scn.nextLine();
+            String passWord = scn.nextLine();
 
-            if (Login.authenticateUser(jParser, jObj, userName, passWord)) {
+            if (cc.verifyUser(userName, passWord)) {
                 System.out.println("Login successful!");
 
-                LoggedIn loggedIn = new LoggedIn(userName);
-                pvli.printMyView(loggedIn);
+
+                pm.printThis(new LoggedIn(scn));
 
                 isLoggingIn = false;
             } else {
