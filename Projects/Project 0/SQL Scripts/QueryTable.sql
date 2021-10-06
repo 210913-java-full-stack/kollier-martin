@@ -29,7 +29,43 @@ SELECT MAX(ACCOUNT_ID)
 FROM ACCOUNTS;
 
 # Get Username of Customer with User_ID
-SELECT u.USERNAME
+SELECT *
 FROM USERINFO u 
 JOIN CUSTOMERS c ON c.USER_ID = u.USER_ID 
 WHERE c.CUSTOMER_ID = 10;
+
+# Get all Customer info based on Username
+SELECT *
+FROM CUSTOMERS c
+JOIN USERINFO u ON c.USER_ID = u.USER_ID 
+WHERE u.USERNAME = 'manm3';
+
+# Get all Accounts based on Username
+SELECT *
+FROM ACCOUNTS a
+JOIN AC_JUNCTION aj on a.ACCOUNT_ID = aj.ACCOUNT_ID 
+JOIN CUSTOMERS c on c.CUSTOMER_ID = aj.CUSTOMER_ID 
+JOIN USERINFO u on u.USER_ID = c.USER_ID 
+WHERE u.USERNAME = 'KB123';
+
+# Get all based on First Name
+SELECT *
+FROM ACCOUNTS a
+JOIN AC_JUNCTION aj on a.ACCOUNT_ID = aj.ACCOUNT_ID 
+JOIN CUSTOMERS c on c.CUSTOMER_ID = aj.CUSTOMER_ID 
+JOIN USERINFO u on u.USER_ID = c.USER_ID 
+WHERE c.FIRST_NAME = 'Kollier';
+
+# Transfer funds based on account number
+UPDATE accounts
+SET balance = (balance - 199.99)
+WHERE account_id = 900001; #Jason
+
+UPDATE accounts
+SET balance = (balance + 199.99)
+WHERE account_id = 900003; #Amanda
+
+# Deposit
+UPDATE ACCOUNTS
+SET BALANCE = (BALANCE + 10)
+WHERE ACCOUNT_ID = 100;
