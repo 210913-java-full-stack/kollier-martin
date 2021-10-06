@@ -3,17 +3,22 @@ package Menu;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-import Models.Customer;
+import DAOs.AccDAO;
+import DAOs.CusDAO;
+import Models.Account;
+import Utils.ConnectionManager;
 import Utils.CredentialChecker;
 
 public class Login extends PrintView {
     public Login(Scanner scn) {
-        super("Login", scn);
+        super(Login.class, scn);
     }
 
     @Override
     public void printMenu() throws SQLException {
         CredentialChecker cc = CredentialChecker.getManager();
+        CusDAO cusDAO = new CusDAO(ConnectionManager.conn);
+        AccDAO accDAO = new AccDAO(ConnectionManager.conn);
         boolean isLoggingIn = true;
 
         while (isLoggingIn) {
@@ -27,13 +32,13 @@ public class Login extends PrintView {
             if (cc.verifyUser(userName, passWord)) {
                 System.out.println("Login successful!");
 
+                pm.setCurrentCustomer(cusDAO.getByName(userName));
+                pm.setCurrentAccount(accDAO.getAllByUsername(userName).get(0)); // Active account is the customer's first account
 
-                pm.printThis(new LoggedIn(scn));
-
+                pm.navigate("class Menu.LoggedIn");
                 isLoggingIn = false;
             } else {
                 System.out.println("Password is incorrect! Try again.");
-                isLoggingIn = true;
             }
         }
     }

@@ -1,20 +1,24 @@
 package Models;
 
-public class UserInfo extends Customer{
+public class UserInfo {
     private String USERNAME, PASSWORD;
     private int USER_ID;
 
-    public UserInfo(String USERNAME, String PASSWORD, int USER_ID) {
+    /**
+     * Parametrized Constructor for UserInfo
+     * @param USERNAME
+     * @param PASSWORD
+     */
+    public UserInfo(String USERNAME, String PASSWORD) {
         this.USERNAME = USERNAME;
         this.PASSWORD = PASSWORD;
-        this.USER_ID = USER_ID;
     }
 
     public String getUSERNAME() {
         return USERNAME;
     }
 
-    public void setUSERNAME(String USERNAME) {
+    public void setUserName(String USERNAME) {
         this.USERNAME = USERNAME;
     }
 
@@ -22,15 +26,21 @@ public class UserInfo extends Customer{
         return PASSWORD;
     }
 
-    public void setPASSWORD(String PASSWORD) {
+    public void setPassword(String PASSWORD) {
         this.PASSWORD = PASSWORD;
     }
 
-    public int getUSER_ID() {
+    public int getUserID() {
         return USER_ID;
     }
 
-    public void setUSER_ID(int USER_ID) {
+    public void setUserID(int USER_ID) {
         this.USER_ID = USER_ID;
+    }
+
+    public String toString(){
+        return getUSERNAME() + " " +
+                getPASSWORD() + " " +
+                getUserID();
     }
 }

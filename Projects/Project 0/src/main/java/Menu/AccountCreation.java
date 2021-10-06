@@ -1,7 +1,9 @@
 package Menu;
 
 import DAOs.AccDAO;
+import DAOs.JunctionDAO;
 import Models.Account;
+import Models.Junction;
 import Utils.ConnectionManager;
 
 import java.sql.SQLException;
@@ -9,12 +11,13 @@ import java.util.Scanner;
 
 public class AccountCreation extends PrintView {
     public AccountCreation(Scanner scn) {
-        super("AccountCreation", scn);
+        super(AccountCreation.class, scn);
     }
 
     @Override
     public void printMenu() throws SQLException {
         AccDAO accDAO = new AccDAO(ConnectionManager.conn);
+        JunctionDAO jDAO = new JunctionDAO(ConnectionManager.conn);
         Account newAccount = new Account();
         boolean isCreatingAccount = true;
         String accountType, input;
@@ -25,9 +28,8 @@ public class AccountCreation extends PrintView {
             accountType = scn.nextLine();
 
             if (!(accountType.equalsIgnoreCase("Checking")) && !(accountType.equalsIgnoreCase("Savings"))) {
-                System.out.println("Please input a valid option.");
+                System.out.println(accountType + " is an valid option. Try again.");
                 isCreatingAccount = true;
-
             } else {
                 newAccount.setAccType(accountType);
                 newAccount.setBalance(0);
@@ -38,18 +40,24 @@ public class AccountCreation extends PrintView {
                 switch (input) {
                     case "Y":
                     case "y":
-                        System.out.println("Please enter the name for this account: ");
+                        System.out.print("Please enter the name for this account: ");
                         input = scn.nextLine();
-                        newAccount.setACCOUNT_NAME(input);
+                        newAccount.setAccountName(input);
+
+                        jDAO.save(new Junction(newAccount.getAccID(), pm.getCurrentCustomer().getCusID()));
+                        accDAO.save(newAccount);
 
                         System.out.println("Account creation successful!");
-                        pm.printThis(new LoggedIn(scn));
+                        pm.navigate("class Menu.LoggedIn");
                         break;
 
                     case "N":
                     case "n":
+                        jDAO.save(new Junction(newAccount.getAccID(), pm.getCurrentCustomer().getCusID()));
+                        accDAO.save(newAccount);
+
                         System.out.println("Account creation successful!");
-                        pm.printThis(new LoggedIn(scn));
+                        pm.navigate("class Menu.LoggedIn");
                         break;
                 }
             }

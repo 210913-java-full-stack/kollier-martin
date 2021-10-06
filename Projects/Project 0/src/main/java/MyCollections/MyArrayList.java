@@ -8,12 +8,16 @@
 package MyCollections;
 
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.Spliterator;
+import java.util.function.Consumer;
 
-public class MyArrayList<T> implements MyListInterface<T>{
+public class MyArrayList<T> implements MyListInterface<T>, Iterable<T>{
     // Initial capacity and list length expansion variable
     private final int INIT_CAPACITY = 5;
 
     private int size;
+    private int growthCount = 0;
 
     private Object[] theList;
 
@@ -48,9 +52,12 @@ public class MyArrayList<T> implements MyListInterface<T>{
 
     @Override
     public void add(T t) {
-        if (theList == EMPTY_LIST || size < theList.length)
-        {
-            grow();
+        try {
+            if (theList == EMPTY_LIST || size < theList.length) {
+                grow();
+            }
+        }catch (IndexOutOfBoundsException e){
+            e.printStackTrace();
         }
 
         // Add the element
@@ -134,12 +141,15 @@ public class MyArrayList<T> implements MyListInterface<T>{
     public boolean contains(T t) {
         boolean doesContain = false;
 
-        for (Object obj : theList)
-        {
-            if (obj.equals(t))
-            {
-                doesContain = true;
+        if(theList != null) {
+            for (Object obj : theList) {
+                if (obj.equals(t)) {
+                    doesContain = true;
+                    break;
+                }
             }
+        } else {
+            System.out.println("The List is Null.");
         }
 
         return doesContain;
@@ -178,9 +188,39 @@ public class MyArrayList<T> implements MyListInterface<T>{
     }
 
     /**
-     * Increases theList by 1
+     * Double theList size by 2
      */
     private void grow() {
-        theList = Arrays.copyOf(theList, size + 1);
-    } //TODO: test
+        growthCount++;
+        theList = Arrays.copyOf(theList, growthCount * 2);
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new Iterator<T>() {
+            int cursor = 0;
+
+            @Override
+            public boolean hasNext() {
+                return cursor != size;
+            }
+
+            @Override
+            public T next() {
+                T t = (T) theList[cursor];
+                cursor += 1;
+                return t;
+            }
+        };
+    }
+
+    @Override
+    public void forEach(Consumer<? super T> action) {
+        Iterable.super.forEach(action);
+    }
+
+    @Override
+    public Spliterator<T> spliterator() {
+        return Iterable.super.spliterator();
+    }
 }

@@ -8,23 +8,37 @@
 
 package Models;
 
+import java.util.Random;
+
 public class Customer {
-    private int CUSTOMER_ID, ACCOUNT_ID, USER_ID = 0;
-
-    /* Add a level of security to these as they are important */
+    private int CUSTOMER_ID, USER_ID = 0;
     private String FIRST_NAME, LAST_NAME, EMAIL = "";
+    private Random rand = new Random();
 
-    public Customer() {
+    /**
+     * Parameterized Constructor.
+     *
+     * @param CUSTOMER_ID The value that will be set to this.CUSTOMER_ID
+     * @param EMAIL The value that will be set to this.EMAIL
+     * @param LAST_NAME The value that will be set to this.LAST_NAME
+     * @param FIRST_NAME The value that will be set to this.FIRST_NAME
+     */
+    public Customer(int CUSTOMER_ID, String EMAIL,  String LAST_NAME, String FIRST_NAME) {
+        this.CUSTOMER_ID = CUSTOMER_ID;
+        this.EMAIL = EMAIL;
+        this.LAST_NAME = LAST_NAME;
+        this.FIRST_NAME = FIRST_NAME;
     }
 
     /**
      * Parameterized Constructor.
      *
-     * @param LAST_NAME The value that will be set to the LAST_NAME of a {@link #Customer(int, String, String, String)} instance.
-     * @param FIRST_NAME The value that will be set to the FIRST_NAME of a {@link #Customer(int, String, String, String)} instance.
+     * @param EMAIL The value that will be set to this.EMAIL
+     * @param LAST_NAME The value that will be set to this.LAST_NAME
+     * @param FIRST_NAME The value that will be set to this.FIRST_NAME
      */
-    public Customer(int CUSTOMER_ID, String EMAIL, String LAST_NAME, String FIRST_NAME) {
-        this.CUSTOMER_ID = CUSTOMER_ID; // Set this to the value from the table
+    public Customer(String EMAIL, String LAST_NAME, String FIRST_NAME) {
+        this.CUSTOMER_ID = rand.nextInt(10000);
         this.EMAIL = EMAIL;
         this.FIRST_NAME = FIRST_NAME;
         this.LAST_NAME = LAST_NAME;
@@ -36,14 +50,6 @@ public class Customer {
 
     public void setCusID (int CUSTOMER_ID) {
         this.CUSTOMER_ID = CUSTOMER_ID;
-    }
-
-    public int getAccID() {
-        return ACCOUNT_ID;
-    }
-
-    public void setAccID(int ACCOUNT_ID) {
-        this.ACCOUNT_ID = ACCOUNT_ID;
     }
 
     public String getFirstName() {
@@ -71,6 +77,6 @@ public class Customer {
     public void setEMAIL(String EMAIL) { this.EMAIL = EMAIL; }
 
     public String toString() {
-        return "Customer " + getCusID() + " - " + getLastName() + ", " + getFirstName();
+        return "Customer " + getCusID() + " - " + getEMAIL() + ", " + getLastName() + ", " + getFirstName();
     }
 }

@@ -3,18 +3,34 @@ package Models;
 import java.sql.Date;
 
 public class Transaction {
-    private int ACCOUNT_ID;
+    private int ACCOUNT_ID, STARTING_BALANCE, NEW_BALANCE, OTHER_ACC;
     private Date DATE;
-    private int STARTING_BALANCE;
-    private int NEW_BALANCE;
     private String DESCRIPTION;
 
-    public Transaction(int ACCOUNT_ID, Date DATE, int STARTING_BALANCE, int NEW_BALANCE, String DESCRIPTION){
+    /**
+     * Parameterized Constructor for Transaction Data
+     * @param OTHER_ACC
+     * @param ACCOUNT_ID
+     * @param DATE
+     * @param STARTING_BALANCE
+     * @param NEW_BALANCE
+     * @param DESCRIPTION
+     */
+    public Transaction(int OTHER_ACC, int ACCOUNT_ID, Date DATE, int STARTING_BALANCE, int NEW_BALANCE, String DESCRIPTION){
+        this.OTHER_ACC = OTHER_ACC;
         this.ACCOUNT_ID = ACCOUNT_ID;
         this.DATE = DATE;
         this.STARTING_BALANCE = STARTING_BALANCE;
         this.NEW_BALANCE = NEW_BALANCE;
         this.DESCRIPTION = DESCRIPTION;
+    }
+
+    public int getOtherAcc() {
+        return OTHER_ACC;
+    }
+
+    public void setOtherAcc(int OTHER_ACC) {
+        this.OTHER_ACC = OTHER_ACC;
     }
 
     public int getACCOUNT_ID() {
@@ -55,5 +71,15 @@ public class Transaction {
 
     public void setDESCRIPTION(String DESCRIPTION) {
         this.DESCRIPTION = DESCRIPTION;
+    }
+
+    public String toString(){
+        return getDATE() + " " +
+                getDESCRIPTION() + " " +
+                getOtherAcc() + " " +
+                getACCOUNT_ID() + " " +
+                getDATE() + " " +
+                getSTARTING_BALANCE() + " " +
+                getNEW_BALANCE();
     }
 }

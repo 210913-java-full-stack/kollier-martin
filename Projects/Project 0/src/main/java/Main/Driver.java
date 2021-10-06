@@ -1,6 +1,9 @@
 package Main;
 
-import Menu.*;
+import Utils.ConnectionManager;
+import Utils.PrintManager;
+
+import java.sql.SQLException;
 
 public class Driver {
     public Driver() {}
@@ -9,9 +12,16 @@ public class Driver {
         boolean running = true;
 
         PrintManager pm = PrintManager.getPM();
+        ConnectionManager.getConn();
 
-        while (running) {
-            pm.printThis(new MainMenu());
+        pm.navigate("class Menu.MainMenu");
+
+        while(running){
+            try{
+                pm.printThis();
+            } catch (SQLException e){
+                e.printStackTrace();
+            }
         }
     }
 }

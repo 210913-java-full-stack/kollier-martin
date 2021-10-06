@@ -7,7 +7,7 @@ public class MainMenu extends PrintView {
 
     public MainMenu (Scanner scn)
     {
-        super("MainMenu", scn);
+        super(MainMenu.class, scn);
     }
 
     @Override
@@ -21,16 +21,19 @@ public class MainMenu extends PrintView {
 
         switch (input) {
             case "1":
-                pm.printThis(new Login(scn));
+                pm.navigate("class Menu.Login");
                 break;
             case "2":
-                pm.printThis(new CustomerCreation(scn));
+                pm.navigate("class Menu.CustomerCreation");
                 break;
             case "q":
             case "Q":
                 scn.close();
                 System.out.println("Closing Application. Goodbye!");
                 System.exit(0);
+                break;
+            default:
+                System.out.println("This is not a valid menu input!");
                 break;
         }
     }

@@ -1,7 +1,6 @@
 package Utils;
 
 import DAOs.*;
-import Models.Customer;
 import Models.UserInfo;
 import MyCollections.MyArrayList;
 
@@ -22,8 +21,8 @@ public class CredentialChecker {
 
         /**
          * Checks DB to see if username and password match each other under the same Customer Account
-         * @param username
-         * @param password
+         * @param username The username to check with the database to see if it exists
+         * @param password The password to check with the database to see if it exists
          * @return
          */
         public boolean verifyUser(String username, String password) {
@@ -38,49 +37,48 @@ public class CredentialChecker {
                     System.out.println("Table is not properly formatted or is invalid. Can not fetch data.");
                 }
 
-                for (int i = 0; i < users.length(); i++){
-                    if(users.get(i).getUSERNAME() == username && users.get(i).getPASSWORD() == password){
+                for (UserInfo user : users){
+                    if(user.getUSERNAME().equals(username) && user.getPASSWORD().equals(password)){
                         verified = true;
-                        break;
                     }
                 }
 
                 return verified;
             }
 
-            /**
-             * This method verifies the syntax of the new account information given, before allowing account creation
-             * @param username
-             * @param password
-             * @return
-             */
-            public boolean isValid(String username, String password){
-                boolean userValid = false, passValid = false, createValid = false;
-                char[] usernameElements = username.toCharArray();
-                char[] passwordElements = password.toCharArray();
+        /**
+         * This method verifies the syntax of the new account information given, before allowing account creation
+         * @param username The new username for account creation
+         * @param password The new password for account creation
+         * @return
+         */
+        public boolean isValid(String username, String password){
+            boolean userValid = false, passValid = false, createValid = false;
+            char[] usernameElements = username.toCharArray();
+            char[] passwordElements = password.toCharArray();
 
-                for (Character c: usernameElements)
+            for (Character c: usernameElements)
+            {
+                if (Character.isLetterOrDigit(c))
                 {
-                    if (Character.isLetterOrDigit(c))
-                    {
-                        userValid = true;
-                    }
+                    userValid = true;
                 }
-
-                for (Character c : passwordElements)
-                {
-                    if (Character.isLetterOrDigit(c))
-                    {
-                        passValid = true;
-                    }
-                }
-
-                if (userValid && passValid)
-                {
-                    createValid = true;
-                }
-
-                return  createValid;
             }
+
+            for (Character c : passwordElements)
+            {
+                if (Character.isLetterOrDigit(c))
+                {
+                    passValid = true;
+                }
+            }
+
+            if (userValid && passValid)
+            {
+                createValid = true;
+            }
+
+            return  createValid;
+        }
     }
 

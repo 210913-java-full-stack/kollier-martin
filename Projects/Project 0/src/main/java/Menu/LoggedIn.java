@@ -1,71 +1,61 @@
 package Menu;
 
-import DAOs.AccDAO;
-import Utils.ConnectionManager;
-import Utils.CredentialChecker;
-
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Scanner;
 
 public class LoggedIn extends PrintView {
     public LoggedIn(Scanner scn)
     {
-        super("LoggedIn", scn);
+        super(LoggedIn.class, scn);
     }
 
-    public void printMenu()
+    public void printMenu() throws SQLException
     {
         boolean isLoggedIn = true;
 
         while (isLoggedIn) {
-            System.out.printf("\n============= Currently Logged In: %s ===============" +
+            System.out.printf("\n============= %s's Account Page ===============" +
                     "\nEnter selection:" +
-                    "\n\t1) Transfer Funds" +
-                    "\n\t2) View Account Balance" +
-                    "\n\t3) Print Transaction History" +
-                    "\n\tQ) Quit to Main Menu\n", pm.c);
+                    "\n\t1) Create New Bank Account" +
+                    "\n\t2) Transfer Funds" +
+                    "\n\t3) Deposit Funds" +
+                    "\n\t4) View Account(s) Balance" +
+                    "\n\t5) Print Transaction History" +
+                    "\n\tQ) Quit to Main Menu\n", pm.getCurrentCustomer().getFirstName());
 
             String input = scn.nextLine();
 
             switch (input) {
                 case "1":
-                    int amount = 0;
-                    int sendToID = 0;
+                    pm.navigate("class Menu.AccountCreation");
+                    isLoggedIn = false;
+                    break;
 
-                    try {
-                        FileWriter fileWriter = new FileWriter("transactions.txt", true);
-                        fileWriter.write("Starting balance: " +
-                                "Successfully sent " + amount +
-                                " to account " + sendToID +
-                                "New Balance: ");
-                    }catch (IOException e)
-                    {
-                        System.out.println("There was a problem writing to the " + e + " file..");
-                    }
                 case "2":
-                    try {
-                        AccDAO accDAO = new AccDAO(ConnectionManager.getConn());
-                        accDAO.getByAID(pm.getCurrentCustomer().getAccID());
-                    } catch (SQLException | IOException e)
-                    {
-                        System.out.println("There was a problem with the creation of the Account DAO.");
-                    }
+                    pm.navigate("class Menu.TransferFunds");
+                    isLoggedIn = false;
+                    break;
 
-                    break;
                 case "3":
-                    try {
-                        FileReader fileReader = new FileReader("transactions.txt");
-                    } catch (IOException e)
-                    {
-                        System.out.println("IOException: " + e);
-                    }
+                    pm.navigate("class Menu.DepositFunds");
+                    isLoggedIn = false;
                     break;
+
+                case "4":
+                    pm.navigate("class Menu.AccountBalance");
+                    isLoggedIn = false;
+                    break;
+
+                case "5":
+                    pm.navigate("class Menu.TransactionHistory");
+                    isLoggedIn = false;
+                    break;
+
                 case "q":
                 case "Q":
-                    System.out.println("Successfully logged out!");
+                    System.out.println("Successfully logged out!\n");
+                    pm.setCurrentCustomer(null); pm.setCurrentAccount(null);
+                    pm.navigate("class Menu.MainMenu");
                     isLoggedIn = false;
                     break;
             }
