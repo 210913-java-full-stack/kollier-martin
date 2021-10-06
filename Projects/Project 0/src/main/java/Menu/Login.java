@@ -38,7 +38,20 @@ public class Login extends PrintView {
                 pm.navigate("class Menu.LoggedIn");
                 isLoggingIn = false;
             } else {
-                System.out.println("Password is incorrect! Try again.");
+                System.out.println("Password is incorrect! Try again?");
+                System.out.print("-> ");
+                String input = scn.nextLine();
+
+                switch (input){
+                    case "y":
+                    case "Y":
+                        pm.navigate("class Menu.MainMenu");
+                        break;
+                    case "n":
+                    case "N":
+                        pm.navigate("class Menu.Login");
+                        break;
+                }
             }
         }
     }

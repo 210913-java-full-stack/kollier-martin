@@ -4,6 +4,7 @@ import Models.Transaction;
 import MyCollections.MyArrayList;
 
 import java.sql.*;
+import java.util.Arrays;
 
 public class TransactionDAO implements BankDAO<Transaction>{
     /**
@@ -34,14 +35,15 @@ public class TransactionDAO implements BankDAO<Transaction>{
     @Override
     public void save(Transaction rowData) throws SQLException {
         sql = "INSERT INTO TRANSACTIONS " +
-                "VALUES (?, ?, ?, ?, ?)";
+                "VALUES (?, ?, ?, ?, ?, ?)";
         pstmt = conn.prepareStatement(sql);
-        pstmt.setInt(1, rowData.getACCOUNT_ID());
-        pstmt.setDate(2, rowData.getDATE());
-        pstmt.setInt(3, rowData.getSTARTING_BALANCE());
-        pstmt.setInt(4, rowData.getNEW_BALANCE());
-        pstmt.setString(4, rowData.getDESCRIPTION());
-        pstmt.executeUpdate(sql);
+        pstmt.setInt(1, rowData.getOtherAcc());
+        pstmt.setInt(2, rowData.getACCOUNT_ID());
+        pstmt.setDate(3, rowData.getDATE());
+        pstmt.setInt(4, rowData.getSTARTING_BALANCE());
+        pstmt.setInt(5, rowData.getNEW_BALANCE());
+        pstmt.setString(6, rowData.getDESCRIPTION());
+        pstmt.executeUpdate();
     }
 
     /**
@@ -110,14 +112,11 @@ public class TransactionDAO implements BankDAO<Transaction>{
     }
 
     /**
-     * Receives all Transaction data dependent on the parameter ID
+     * Receives all Transaction data dependent on the parameter ID and prints them
      * @param ID The Customer ID to go by
-     * @return An ArrayList of Transaction objects
      * @throws SQLException
      */
-    public MyArrayList<Transaction> getAllByCID(int ID) throws SQLException{
-        transactions.clear();
-
+    public void getAllByCID(int ID) throws SQLException{
         try{
             sql = "SELECT * FROM TRANSACTIONS t " +
                     "JOIN AC_JUNCTION aj ON aj.ACCOUNT_ID = t.ACCOUNT_ID " +
@@ -132,14 +131,14 @@ public class TransactionDAO implements BankDAO<Transaction>{
                         rs.getInt("ACCOUNT_ID"),
                         rs.getDate("TRANSACTION_DATE"),
                         rs.getInt("STARTING_BALANCE"),
-                        rs.getInt("ENDING_BALANCE"),
+                        rs.getInt("NEW_BALANCE"),
                         rs.getString("DESCRIPTION"));
                 transactions.add(currentTransaction);
+                System.out.println(transactions);
+                transactions.clear();
             }
         } catch (SQLException e){
             e.printStackTrace();
         }
-
-        return transactions;
     }
 }

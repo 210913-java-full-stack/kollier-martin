@@ -53,7 +53,7 @@ public class JunctionDAO implements BankDAO<Junction> {
         pstmt = conn.prepareStatement(sql);
         pstmt.setInt(1, rowData.getAccountID());
         pstmt.setInt(2, rowData.getCustomerID());
-        pstmt.executeUpdate(sql);
+        pstmt.executeUpdate();
     }
 
     /**

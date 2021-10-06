@@ -49,6 +49,7 @@ public class AccountCreation extends PrintView {
 
                         System.out.println("Account creation successful!");
                         pm.navigate("class Menu.LoggedIn");
+                        isCreatingAccount = false;
                         break;
 
                     case "N":
@@ -58,6 +59,7 @@ public class AccountCreation extends PrintView {
 
                         System.out.println("Account creation successful!");
                         pm.navigate("class Menu.LoggedIn");
+                        isCreatingAccount = false;
                         break;
                 }
             }

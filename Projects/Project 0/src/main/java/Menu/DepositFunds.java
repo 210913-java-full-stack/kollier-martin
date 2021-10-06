@@ -41,14 +41,12 @@ public class DepositFunds extends PrintView {
                 System.out.printf("\n\t%d - Current Balance: [%s]", accounts.get(i).getAccID(), formatter.format(accounts.get(i).getBalance()));
                 accountIDs.add(accounts.get(i).getAccID());
             }
-            System.out.println("===========================================");
+            System.out.print("\n-> ");
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
         accountID = scn.nextLine();
-
-        //pm.setCurrentAccount();
 
         // Turn input into an integer, Use for validation
         int accountIDInt = Integer.parseInt(accountID);
@@ -57,20 +55,19 @@ public class DepositFunds extends PrintView {
         if (!accountIDs.contains(accountIDInt)){
             System.out.println("This is not a valid account number. Try again.");
         } else {
-            System.out.println("Enter deposit amount: ");
+            System.out.print("Enter deposit amount: ");
             String input = scn.nextLine(); amount = Integer.parseInt(input);
 
+            startingBalance = accDAO.getAccByID(accountIDInt).getBalance();
+
             if (accDAO.depositFunds(amount, accountIDInt)){
-                startingBalance = accDAO.getAccByID(accountIDInt).getBalance();
-                endingBalance = accDAO.getAccByID(accountIDInt).getBalance() + amount;
+                endingBalance = accDAO.getAccByID(accountIDInt).getBalance();
 
-                depositStatus = ("Transfer Successful\n" +
-                        "Old Balance: " + formatter.format(startingBalance) +
-                        "\nNew Balance: " + formatter.format(endingBalance));
-
-                System.out.println(depositStatus);
+                depositStatus = ("Deposit Successful - Old Balance: " + formatter.format(startingBalance) +
+                        ", New Balance: " + formatter.format(endingBalance));
 
                 tDAO.save(new Transaction(accountIDInt, accountIDInt, sqlDate, startingBalance, endingBalance, depositStatus));
+                pm.navigate("class Menu.LoggedIn");
             }
         }
     }

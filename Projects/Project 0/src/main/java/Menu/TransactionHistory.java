@@ -17,8 +17,8 @@ public class TransactionHistory extends PrintView{
     public void printMenu() throws SQLException {
         TransactionDAO tDao = new TransactionDAO(ConnectionManager.conn);
 
-        for (Transaction t : tDao.getAllByCID(pm.getCurrentCustomer().getCusID())){
-            System.out.println(t.toString());
-        }
+        tDao.getAllByCID(pm.getCurrentCustomer().getCusID());
+
+        pm.navigate("class Menu.LoggedIn");
     }
 }

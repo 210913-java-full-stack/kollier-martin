@@ -16,6 +16,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 public class AccDAO implements BankDAO<Account> {
     /**
@@ -59,13 +61,14 @@ public class AccDAO implements BankDAO<Account> {
      */
     @Override
     public void save(Account rowData) throws SQLException {
-        sql = "INSERT INTO ACCOUNTS(ACCOUNT_ID, ACCOUNT_TYPE, BALANCE)" +
-                "VALUES (?, ?, ?)";
+        sql = "INSERT INTO ACCOUNTS(ACCOUNT_NAME, ACCOUNT_ID, ACCOUNT_TYPE, BALANCE)" +
+                "VALUES (?, ?, ?, ?)";
         pstmt = conn.prepareStatement(sql);
-        pstmt.setInt(1, rowData.getAccID());
-        pstmt.setString(2, rowData.getAccType());
-        pstmt.setInt(3, rowData.getBalance());
-        pstmt.executeUpdate(sql);
+        pstmt.setString(1, rowData.getAccountName());
+        pstmt.setInt(2, rowData.getAccID());
+        pstmt.setString(3, rowData.getAccType());
+        pstmt.setInt(4, rowData.getBalance());
+        pstmt.executeUpdate();
     }
 
     /**
@@ -109,9 +112,12 @@ public class AccDAO implements BankDAO<Account> {
 
         rs = pstmt.executeQuery();
 
-        currentAccount = new Account(rs.getString("ACCOUNT_NAME"),
-                rs.getString("ACCOUNT_TYPE"),
-                rs.getInt("BALANCE"));
+        while (rs.next()) {
+            currentAccount = new Account(rs.getString("ACCOUNT_NAME"),
+                    rs.getInt("ACCOUNT_ID"),
+                    rs.getString("ACCOUNT_TYPE"),
+                    rs.getInt("BALANCE"));
+        }
 
         return currentAccount;
     }
@@ -221,23 +227,24 @@ public class AccDAO implements BankDAO<Account> {
         boolean success = false;
 
         try {
-            if (amount > PrintManager.getPM().getCurrentAccount().getBalance()) {
+            if (amount > getAccByID(accID).getBalance()) {
                 System.out.println("You have insufficient funds for this transaction.");
                 success = false;
             } else {
-                sql = "UPDATE ACCOUNTS" +
-                        "SET BALANCE = (BALANCE - ?)" +
+                sql = "UPDATE ACCOUNTS " +
+                        "SET BALANCE = (BALANCE - ?) " +
                         "WHERE ACCOUNT_ID = ?";
                 pstmt = conn.prepareStatement(sql);
                 pstmt.setInt(1, amount);
                 pstmt.setInt(2, accID);
 
-                if (pstmt.executeUpdate(sql) != 0) {
+                if (pstmt.executeUpdate() != 0) {
                     success = true;
                 }
             }
         } catch (SQLException e) {
-            System.out.println(NullAccount(PrintManager.getPM().getCurrentAccount().getBalance()));
+            System.out.println(NullAccount(accID));
+            e.printStackTrace();
             success = false;
         }
 
@@ -254,15 +261,15 @@ public class AccDAO implements BankDAO<Account> {
     public boolean depositFunds(int amount, int accID) throws SQLException {
         boolean success = false;
 
-        sql = "UPDATE ACCOUNTS" +
-                "SET BALANCE = (BALANCE + ?) " +
-                "WHERE ACCOUNT_ID = ?";
+        sql = "UPDATE ACCOUNTS a " +
+                "SET a.BALANCE = (a.BALANCE + ?) " +
+                "WHERE a.ACCOUNT_ID = ?";
 
         pstmt = conn.prepareStatement(sql);
         pstmt.setInt(1, amount);
         pstmt.setInt(2, accID);
 
-        if(pstmt.executeUpdate(sql) != 0){
+        if(pstmt.executeUpdate() != 0){
             success = true;
         }
 
@@ -278,23 +285,23 @@ public class AccDAO implements BankDAO<Account> {
      */
     public boolean transferFunds(int amount, int accID, int otherAccID){
         boolean success = false;
-
         withdrawFunds(amount, accID);
-
+        NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.US);
         try {
-            sql = "UPDATE ACCOUNTS" +
-                    "SET BALANCE = (BALANCE + ?)" +
+            sql = "UPDATE ACCOUNTS " +
+                    "SET BALANCE = (BALANCE + ?) " +
                     "WHERE ACCOUNT_ID = ?";
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, amount);
             pstmt.setInt(2, otherAccID);
 
-            if (pstmt.executeUpdate(sql) != 0) {
-                System.out.println(amount + " has been deposited to: Account " + otherAccID);
+            if (pstmt.executeUpdate() != 0) {
+                System.out.println(formatter.format(amount) + " has been deposited to Account: " + otherAccID);
                 success = true;
             }
         } catch (SQLException e) {
             System.out.println(NullAccount(otherAccID));
+            e.printStackTrace();
             success = false;
         }
 

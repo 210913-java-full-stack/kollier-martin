@@ -17,6 +17,7 @@ public class MainMenu extends PrintView {
                 "\n\t1) Login" +
                 "\n\t2) Create an Account" +
                 "\n\tQ) Quit Application");
+        System.out.print("-> ");
         String input = scn.nextLine();
 
         switch (input) {

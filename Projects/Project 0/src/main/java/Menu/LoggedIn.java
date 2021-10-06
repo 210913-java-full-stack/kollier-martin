@@ -23,6 +23,7 @@ public class LoggedIn extends PrintView {
                     "\n\t5) Print Transaction History" +
                     "\n\tQ) Quit to Main Menu\n", pm.getCurrentCustomer().getFirstName());
 
+            System.out.print("-> ");
             String input = scn.nextLine();
 
             switch (input) {

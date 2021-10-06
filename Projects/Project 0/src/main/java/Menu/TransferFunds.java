@@ -44,32 +44,40 @@ public class TransferFunds extends PrintView{
 
                 // Print available accounts
                 for (Account acc : accounts) {
-                    System.out.printf("\n\t%d : [%s]", acc.getAccID(), formatter.format(acc.getBalance()));
+                    System.out.printf("\t%d : [%s]", acc.getAccID(), formatter.format(acc.getBalance()));
                 }
 
                 System.out.println();
 
-                System.out.println("Choose the account in which you would like to transfer from: ");
+                System.out.print("Choose the account in which you would like to transfer from: ");
                 accID = scn.nextLine();
 
-                System.out.println("Input transfer amount: ");
+                System.out.print("Input transfer amount: ");
                 amount = scn.nextLine();
 
-                System.out.println("Input any Account ID from within the database where you would like to transfer:");
+                System.out.print("Input any Account ID from within the database where you would like to transfer: ");
                 sendToID = scn.nextLine();
 
                 accIDI = Integer.parseInt(accID); sendToIDI = Integer.parseInt(sendToID); amountI = Integer.parseInt(amount);
 
-                // Store Transaction
-                tDAO.save(new Transaction(sendToIDI,
-                        accIDI,
-                        sqlDate,
-                        accDAO.getAccByID(accIDI).getBalance(),
-                        accDAO.getAccByID(accIDI).getBalance() + amountI,
-                        ("Successfully transferred " + amount + " to Account: " + accID + "!")));
+                int transactionOB = accDAO.getAccByID(accIDI).getBalance();
+                int transactionNB = accDAO.getAccByID(accIDI).getBalance() + amountI;
 
                 // Transfer Funds
-                accDAO.transferFunds(amountI, accIDI, sendToIDI);
+                if (accDAO.transferFunds(amountI, accIDI, sendToIDI)){
+                    // Store Transaction
+                    tDAO.save(new Transaction(sendToIDI,
+                            accIDI,
+                            sqlDate,
+                            transactionOB,
+                            transactionNB,
+                            ("Successfully transferred " + formatter.format(amountI) + " to Account: " + sendToIDI + "! " +
+                                    "Old Balance: " + formatter.format(transactionOB) +
+                                    ", New Balance: " + formatter.format(transactionNB))));
+
+                    pm.navigate("class Menu.LoggedIn");
+                    isTransferring = false;
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }

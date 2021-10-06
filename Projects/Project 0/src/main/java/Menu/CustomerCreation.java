@@ -83,7 +83,9 @@ public class CustomerCreation extends PrintView {
                 System.out.println("\nAccount creation successful! A new checking account has been created as a new customer courtesy.");
                 System.out.print("Would you like to login now? ");
 
-                if (scn.nextLine().equalsIgnoreCase("y")) {
+                String input = scn.nextLine();
+
+                if (input.equalsIgnoreCase("y")) {
                     isCreatingAccount = false;
 
                     pm.setCurrentAccount(newAccount);
@@ -93,7 +95,7 @@ public class CustomerCreation extends PrintView {
                     newCustomer = null;
 
                     pm.navigate("class Menu.Login");
-                } else if (scn.nextLine().equalsIgnoreCase("n")) {
+                } else if (input.equalsIgnoreCase("n")) {
                     isCreatingAccount = false;
 
                     pm.navigate("class Menu.MainMenu");

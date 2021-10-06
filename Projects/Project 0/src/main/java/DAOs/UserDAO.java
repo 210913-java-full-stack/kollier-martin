@@ -45,7 +45,7 @@ public class UserDAO implements BankDAO<UserInfo>{
         pstmt = conn.prepareStatement(sql);
         pstmt.setString(1, row.getUSERNAME());
         pstmt.setString(2, row.getPASSWORD());
-        pstmt.executeUpdate(sql);
+        pstmt.executeUpdate();
     }
 
     /**

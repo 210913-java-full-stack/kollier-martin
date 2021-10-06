@@ -1,5 +1,6 @@
 package Models;
 
+import java.io.PrintStream;
 import java.util.Random;
 
 public class Account
@@ -83,5 +84,12 @@ public class Account
 
     public void setBalance(int BALANCE) {
         this.BALANCE = BALANCE;
+    }
+
+    public String toString(){
+        PrintStream str = System.out.printf("'%s', {%s}, %d : [$%d]", getAccountName(),
+                getAccType(), getAccID(), getBalance());
+
+        return str.toString();
     }
 }

@@ -74,12 +74,6 @@ public class Transaction {
     }
 
     public String toString(){
-        return getDATE() + " " +
-                getDESCRIPTION() + " " +
-                getOtherAcc() + " " +
-                getACCOUNT_ID() + " " +
-                getDATE() + " " +
-                getSTARTING_BALANCE() + " " +
-                getNEW_BALANCE();
+        return getDATE() + " | " + getDESCRIPTION();
     }
 }

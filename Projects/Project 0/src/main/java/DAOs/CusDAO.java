@@ -66,7 +66,7 @@ public class CusDAO implements BankDAO<Customer>{
         pstmt.setString(2, rowData.getEMAIL());
         pstmt.setString(3, rowData.getLastName());
         pstmt.setString(4, rowData.getFirstName());
-        pstmt.executeUpdate(sql);
+        pstmt.executeUpdate();
     }
 
     /**
