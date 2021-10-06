@@ -25,6 +25,3 @@ As a user I can:
 ## Tech Stack
 - [x] Java 8
 - [x] Apache Maven
-## Presentation
-- [ ] Finalized version of application must be pushed to personal repository within this organization by the presentation date
-- [ ] 5 minute live demonstration of the implemented features
