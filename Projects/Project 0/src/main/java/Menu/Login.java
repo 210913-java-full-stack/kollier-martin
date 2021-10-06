@@ -45,11 +45,11 @@ public class Login extends PrintView {
                 switch (input){
                     case "y":
                     case "Y":
-                        pm.navigate("class Menu.MainMenu");
                         break;
                     case "n":
                     case "N":
-                        pm.navigate("class Menu.Login");
+                        isLoggingIn = false;
+                        pm.navigate("class Menu.MainMenu");
                         break;
                 }
             }
