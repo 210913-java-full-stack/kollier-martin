@@ -19,8 +19,9 @@ public class LoggedIn extends PrintView {
                     "\n\t1) Create New Bank Account" +
                     "\n\t2) Transfer Funds" +
                     "\n\t3) Deposit Funds" +
-                    "\n\t4) View Account(s) Balance" +
-                    "\n\t5) Print Transaction History" +
+                    "\n\t4) Withdraw Funds" +
+                    "\n\t5) View Account(s) Balance" +
+                    "\n\t6) Print Transaction History" +
                     "\n\tQ) Quit to Main Menu\n", pm.getCurrentCustomer().getFirstName());
 
             System.out.print("-> ");
@@ -43,11 +44,16 @@ public class LoggedIn extends PrintView {
                     break;
 
                 case "4":
-                    pm.navigate("class Menu.AccountBalance");
+                    pm.navigate("class Menu.WithdrawFunds");
                     isLoggedIn = false;
                     break;
 
                 case "5":
+                    pm.navigate("class Menu.AccountBalance");
+                    isLoggedIn = false;
+                    break;
+
+                case "6":
                     pm.navigate("class Menu.TransactionHistory");
                     isLoggedIn = false;
                     break;

@@ -78,10 +78,13 @@ public class TransferFunds extends PrintView{
                     pm.navigate("class Menu.LoggedIn");
                     isTransferring = false;
                 }
+                else{
+                    pm.navigate("class Menu.LoggedIn");
+                    isTransferring = false;
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
-        pm.navigate("class Menu.LoggedIn");
     }
 }

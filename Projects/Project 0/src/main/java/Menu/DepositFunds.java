@@ -60,14 +60,19 @@ public class DepositFunds extends PrintView {
 
             startingBalance = accDAO.getAccByID(accountIDInt).getBalance();
 
-            if (accDAO.depositFunds(amount, accountIDInt)){
-                endingBalance = accDAO.getAccByID(accountIDInt).getBalance();
+            if (amount < 0){
+                System.out.println("Amount " + amount + " is not a positive value.");
+            }
+            else {
+                if (accDAO.depositFunds(amount, accountIDInt)) {
+                    endingBalance = accDAO.getAccByID(accountIDInt).getBalance();
 
-                depositStatus = ("Deposit Successful - Old Balance: " + formatter.format(startingBalance) +
-                        ", New Balance: " + formatter.format(endingBalance));
+                    depositStatus = ("Deposit Successful - Old Balance: " + formatter.format(startingBalance) +
+                            ", New Balance: " + formatter.format(endingBalance));
 
-                tDAO.save(new Transaction(accountIDInt, accountIDInt, sqlDate, startingBalance, endingBalance, depositStatus));
-                pm.navigate("class Menu.LoggedIn");
+                    tDAO.save(new Transaction(accountIDInt, accountIDInt, sqlDate, startingBalance, endingBalance, depositStatus));
+                    pm.navigate("class Menu.LoggedIn");
+                }
             }
         }
     }

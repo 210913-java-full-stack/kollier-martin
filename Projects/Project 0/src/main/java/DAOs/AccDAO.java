@@ -285,24 +285,25 @@ public class AccDAO implements BankDAO<Account> {
      */
     public boolean transferFunds(int amount, int accID, int otherAccID){
         boolean success = false;
-        withdrawFunds(amount, accID);
-        NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.US);
-        try {
-            sql = "UPDATE ACCOUNTS " +
-                    "SET BALANCE = (BALANCE + ?) " +
-                    "WHERE ACCOUNT_ID = ?";
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, amount);
-            pstmt.setInt(2, otherAccID);
+        if(withdrawFunds(amount, accID)){
+            NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.US);
+            try {
+                sql = "UPDATE ACCOUNTS " +
+                        "SET BALANCE = (BALANCE + ?) " +
+                        "WHERE ACCOUNT_ID = ?";
+                pstmt = conn.prepareStatement(sql);
+                pstmt.setInt(1, amount);
+                pstmt.setInt(2, otherAccID);
 
-            if (pstmt.executeUpdate() != 0) {
-                System.out.println(formatter.format(amount) + " has been deposited to Account: " + otherAccID);
-                success = true;
+                if (pstmt.executeUpdate() != 0) {
+                    System.out.println(formatter.format(amount) + " has been deposited to Account: " + otherAccID);
+                    success = true;
+                }
+            } catch (SQLException e) {
+                System.out.println(NullAccount(otherAccID));
+                e.printStackTrace();
+                success = false;
             }
-        } catch (SQLException e) {
-            System.out.println(NullAccount(otherAccID));
-            e.printStackTrace();
-            success = false;
         }
 
         return success;
