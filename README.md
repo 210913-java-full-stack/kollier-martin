@@ -1,4 +1,4 @@
-# P0 'Do A Flip' by kollier-martin
+# Banking Application by kollier-martin
 ## User Stories
 As a user, I can:
 - [x] Register a new user account
